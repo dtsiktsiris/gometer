@@ -53,7 +53,8 @@ func main() {
 		if len(c.TestSets[i].Keep) > 0 {
 
 			for k, v := range c.TestSets[i].Keep {
-				//extrack value return value we want to keep
+				//extractValue return value we want to keep
+				//v is the path of this value
 				keeper[k] = reqs.ExtractValue(result, v)
 				fmt.Println("we keep: ", keeper[k])
 			}

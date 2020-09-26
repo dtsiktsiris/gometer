@@ -8,6 +8,8 @@ test_sets:
       url: http://localhost:8080/
     expect:
       statusCode: 200
+      assertions:
+        message field field2 field3: localhost
     keep:
       loc: message field field2 field3
       myval2: message field field2

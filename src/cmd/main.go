@@ -37,21 +37,20 @@ func main() {
 		if err != nil {
 			// handle error
 		}
+		body, readErr := ioutil.ReadAll(resp.Body)
+		if readErr != nil {
+			log.Fatal(readErr)
+		}
+		defer resp.Body.Close()
+
+		//Declared an empty interface
+		var result map[string]interface{}
+
+		//Unmarshal or Decode the JSON to the interface.
+		json.Unmarshal(body, &result)
+		//fmt.Println(result)
 		//check if there is anything to keep
 		if len(c.TestSets[i].Keep) > 0 {
-
-			body, readErr := ioutil.ReadAll(resp.Body)
-			if readErr != nil {
-				log.Fatal(readErr)
-			}
-			defer resp.Body.Close()
-
-			//Declared an empty interface
-			var result map[string]interface{}
-
-			//Unmarshal or Decode the JSON to the interface.
-			json.Unmarshal(body, &result)
-			//fmt.Println(result)
 
 			for k, v := range c.TestSets[i].Keep {
 				//extrack value return value we want to keep
@@ -61,7 +60,7 @@ func main() {
 
 		}
 		//assert happens here, currently only status
-		reqs.Assert(c.TestSets[i].Expect, resp)
+		reqs.Assert(c.TestSets[i].Expect, resp,result)
 	}
 
 }

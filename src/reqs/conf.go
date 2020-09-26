@@ -25,6 +25,7 @@ type Request struct {
 
 type Expect struct {
 	StatusCode int `yaml:"statusCode"`
+	Assertions map[string]string `yaml:"assertions"`
 }
 
 func (c *Conf) GetConf() *Conf {

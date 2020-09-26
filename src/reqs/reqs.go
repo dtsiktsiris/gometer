@@ -12,10 +12,10 @@ func (request *Request) Resolve() (*http.Response, error) {
 		resp, err := http.Get(request.Url)
 		return resp, err
 	case "POST" :
-		resp, err := http.Post(request.Url,"application/json",bytes.NewBufferString("oti na ne"))
+		resp, err := http.Post(request.Url,"application/json",bytes.NewBufferString(request.Body))
 		return resp, err
 	case "PUT" :
-		req, err := http.NewRequest(http.MethodPut, request.Url,bytes.NewBufferString("oti na ne"))
+		req, err := http.NewRequest(http.MethodPut, request.Url,bytes.NewBufferString(request.Body))
 		resp, err := http.DefaultClient.Do(req)
 		return resp, err
 

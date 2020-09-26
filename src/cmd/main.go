@@ -48,7 +48,7 @@ func main() {
 
 		//Unmarshal or Decode the JSON to the interface.
 		json.Unmarshal(body, &result)
-		//fmt.Println(result)
+		fmt.Println(result)
 		//check if there is anything to keep
 		if len(c.TestSets[i].Keep) > 0 {
 

@@ -13,18 +13,19 @@ type Conf struct {
 }
 
 type TestSet struct {
-	Request Request `yaml:"request"`
-	Expect Expect `yaml:"expect"`
-	Keep map[string]string `yaml:"keep"`
+	Request Request           `yaml:"request"`
+	Expect  Expect            `yaml:"expect"`
+	Keep    map[string]string `yaml:"keep"`
 }
 
 type Request struct {
 	Method string `yaml:"method"`
 	Url    string `yaml:"url"`
+	Body   string `yaml:"body"`
 }
 
 type Expect struct {
-	StatusCode int `yaml:"statusCode"`
+	StatusCode int               `yaml:"statusCode"`
 	Assertions map[string]string `yaml:"assertions"`
 }
 

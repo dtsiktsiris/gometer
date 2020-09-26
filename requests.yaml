@@ -16,10 +16,13 @@ test_sets:
   - request:
       method: PUT
       url: http://${loc}:8080/
+      body: '{"name": "dimitris"}'
     expect:
       statusCode: 202
+      assertions:
+        name: dimitris
     keep:
-      myval: message
+      myval: name
   - request:
       method: POST
       url: http://localhost:8080/

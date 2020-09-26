@@ -1,11 +1,21 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
+	body, readErr := ioutil.ReadAll( r.Body)
+
+	str := string(body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+//js,_ := json.Marshal(str)
+	fmt.Printf(str)
 	w.Header().Set("Content-Type", "application/json")
 	switch r.Method {
 	case "GET":
@@ -16,7 +26,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{"message": "post called"}`))
 	case "PUT":
 		w.WriteHeader(http.StatusAccepted)
-		w.Write([]byte(`{"message": "put called"}`))
+		w.Write([]byte(str))
 	case "DELETE":
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(`{"message": "delete called"}`))

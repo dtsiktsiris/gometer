@@ -11,17 +11,30 @@ import (
 	"../reqs"
 )
 
+func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
+
+	re := regexp.MustCompile("\\${\\w+}")
+
+	if len(re.FindString(req.Url)) > 0 {
+		splt := re.FindAllString(req.Url, -1)
+
+		for _, s := range splt {
+			//we replase ${mplampla} with keeper['mplampla']
+			req.Url = strings.Replace(req.Url, s, keeper[s[2:len(s)-1]], -1)
+		}
+	}
+	//TODO we also need to check/replace for body and header
+}
+
 func main() {
 
-	yamlPath := "../../simple.yaml"
-	// yamlPath := "../../requests.yaml"
+	// yamlPath := "../../simple.yaml"
+	yamlPath := "../../requests.yaml"
 
 	var c reqs.Conf
 	//load yaml file to Conf
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
-
-	re := regexp.MustCompile("\\${\\w+}")
 
 	//we iterate through test sets
 	for i := 0; i < len(c.TestSets); i++ {
@@ -30,14 +43,7 @@ func main() {
 
 		//check if there is dynamic variable which need to be setted
 		//we do it with regex re and search for this form ${mplampla}
-		if len(re.FindString(c.TestSets[i].Request.Url)) > 0 {
-			splt := re.FindAllString(c.TestSets[i].Request.Url, -1)
-
-			for _, s := range splt {
-				//we replase ${mplampla} with keeper['mplampla']
-				c.TestSets[i].Request.Url = strings.Replace(c.TestSets[i].Request.Url, s, keeper[s[2:len(s)-1]], -1)
-			}
-		}
+		setDynamicVariables(&c.TestSets[i].Request, keeper)
 
 		//we do request
 		resp, err := c.TestSets[i].Request.Resolve()

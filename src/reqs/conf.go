@@ -29,9 +29,9 @@ type Expect struct {
 	Assertions map[string]string `yaml:"assertions"`
 }
 
-func (c *Conf) GetConf() *Conf {
+func (c *Conf) GetConf(yamlPath string) *Conf {
 
-	yamlFile, err := ioutil.ReadFile("../../requests.yaml")
+	yamlFile, err := ioutil.ReadFile(yamlPath)
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 	}

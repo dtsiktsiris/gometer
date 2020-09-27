@@ -1,19 +1,21 @@
 package main
 
 import (
-	"../reqs"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"regexp"
 	"strings"
+
+	"../reqs"
 )
 
 func main() {
 	var c reqs.Conf
 	//load yaml file to Conf
-	c.GetConf()
+	yamlPath := "../../requests.yaml"
+	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
 	re := regexp.MustCompile("\\${\\w+}")
@@ -61,7 +63,7 @@ func main() {
 
 		}
 		//assert happens here, currently only status
-		reqs.Assert(c.TestSets[i].Expect, resp,result)
+		reqs.Assert(c.TestSets[i].Expect, resp, result)
 	}
 
 }

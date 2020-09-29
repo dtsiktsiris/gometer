@@ -9,7 +9,9 @@ import (
 
 type Conf struct {
 	Variables map[string]interface{} `yaml:"variables"`
+	Before    []TestSet              `yaml:"before"`
 	TestSets  []TestSet              `yaml:"test_sets"`
+	After     []TestSet              `yaml:"after"`
 }
 
 type TestSet struct {

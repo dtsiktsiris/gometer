@@ -28,8 +28,8 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 
 func main() {
 
-	// yamlPath := "../../simple.yaml"
-	yamlPath := "../../requests.yaml"
+	yamlPath := "../../simple.yaml"
+	// yamlPath := "../../requests.yaml"
 
 	var c reqs.Conf
 	//load yaml file to Conf
@@ -83,7 +83,7 @@ func main() {
 
 			// }
 
-			fmt.Println("*** Test: ", testIndex)
+			fmt.Println("*** Test: ", testIndex+1)
 
 			//check if there is dynamic variable which need to be setted
 			//we do it with regex re and search for this form ${mplampla}

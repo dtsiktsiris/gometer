@@ -15,7 +15,8 @@ type Conf struct {
 }
 
 type TestSet struct {
-	Tests []Test `yaml:"test_set"`
+	Retries int    `yaml:"retries"`
+	Tests   []Test `yaml:"tests"`
 }
 
 type Test struct {

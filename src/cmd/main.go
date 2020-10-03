@@ -7,6 +7,7 @@ import (
 	"log"
 	"regexp"
 	"strings"
+	"sync"
 
 	"../reqs"
 )
@@ -36,6 +37,7 @@ func main() {
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
+	// execute "before" requests
 	for _, test := range c.Before {
 		fmt.Println("-----Before-----")
 		setDynamicVariables(&test.Request, keeper)
@@ -72,53 +74,61 @@ func main() {
 		reqs.Assert(test.Expect, resp, result)
 	}
 
+	var wg sync.WaitGroup
+
 	//we iterate through test sets
 	for i := 0; i < len(c.TestSets); i++ {
 
 		fmt.Println("-----Test Set Begin-----")
 
-		for testIndex, test := range c.TestSets[i].Tests {
+		for retry := 0; retry < c.TestSets[i].Retries; retry++ {
+			wg.Add(1)
+			go func(tests []reqs.Test) {
+				defer wg.Done()
+				for testIndex, test := range tests {
 
-			// go func(){
+					fmt.Println("*** Test: ", testIndex+1)
 
-			// }
+					//check if there is dynamic variable which need to be setted
+					//we do it with regex re and search for this form ${mplampla}
+					setDynamicVariables(&test.Request, keeper)
 
-			fmt.Println("*** Test: ", testIndex+1)
+					//we do request
+					resp, err := test.Request.Resolve()
+					if err != nil {
+						// handle error
+					}
+					body, readErr := ioutil.ReadAll(resp.Body)
+					if readErr != nil {
+						log.Fatal(readErr)
+					}
+					defer resp.Body.Close()
 
-			//check if there is dynamic variable which need to be setted
-			//we do it with regex re and search for this form ${mplampla}
-			setDynamicVariables(&test.Request, keeper)
+					//Declared an empty interface
+					var result map[string]interface{}
 
-			//we do request
-			resp, err := test.Request.Resolve()
-			if err != nil {
-				// handle error
-			}
-			body, readErr := ioutil.ReadAll(resp.Body)
-			if readErr != nil {
-				log.Fatal(readErr)
-			}
-			defer resp.Body.Close()
+					//Unmarshal or Decode the JSON to the interface.
+					json.Unmarshal(body, &result)
+					fmt.Println("body:", result)
 
-			//Declared an empty interface
-			var result map[string]interface{}
+					//check what to keep
+					for k, v := range test.Keep {
+						//extractValue return value we want to keep
+						//v is the path to this value
+						keeper[k] = reqs.ExtractValue(result, v)
+						fmt.Println("we keep: ", keeper[k])
+					}
 
-			//Unmarshal or Decode the JSON to the interface.
-			json.Unmarshal(body, &result)
-			fmt.Println("body:", result)
+					//assert happens here
+					reqs.Assert(test.Expect, resp, result)
 
-			//check what to keep
-			for k, v := range test.Keep {
-				//extractValue return value we want to keep
-				//v is the path to this value
-				keeper[k] = reqs.ExtractValue(result, v)
-				fmt.Println("we keep: ", keeper[k])
-			}
+				}
 
-			//assert happens here
-			reqs.Assert(test.Expect, resp, result)
+			}(c.TestSets[i].Tests)
 
+			wg.Wait()
 		}
+
 	}
 
 }

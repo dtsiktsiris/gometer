@@ -126,9 +126,9 @@ func main() {
 
 			}(c.TestSets[i].Tests)
 
-			wg.Wait()
 		}
 
+		wg.Wait()
 	}
 
 }

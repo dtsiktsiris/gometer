@@ -9,12 +9,16 @@ import (
 
 type Conf struct {
 	Variables map[string]interface{} `yaml:"variables"`
-	Before    []TestSet              `yaml:"before"`
+	Before    []Test                 `yaml:"before"`
 	TestSets  []TestSet              `yaml:"test_sets"`
-	After     []TestSet              `yaml:"after"`
+	After     []Test                 `yaml:"after"`
 }
 
 type TestSet struct {
+	Tests []Test `yaml:"test_set"`
+}
+
+type Test struct {
 	Request Request           `yaml:"request"`
 	Expect  Expect            `yaml:"expect"`
 	Keep    map[string]string `yaml:"keep"`

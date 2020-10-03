@@ -37,16 +37,20 @@ func main() {
 	keeper := make(map[string]string)
 
 	//we iterate through test sets
-	for i := 0; i < len(c.TestSets); i++ {
+	for i := 0; i < len(c.TestSets[0].Tests); i++ {
+
+		// go func(){
+
+		// }
 
 		fmt.Println("-----Test Set Begin-----")
 
 		//check if there is dynamic variable which need to be setted
 		//we do it with regex re and search for this form ${mplampla}
-		setDynamicVariables(&c.TestSets[i].Request, keeper)
+		setDynamicVariables(&c.TestSets[0].Tests[i].Request, keeper)
 
 		//we do request
-		resp, err := c.TestSets[i].Request.Resolve()
+		resp, err := c.TestSets[0].Tests[i].Request.Resolve()
 		if err != nil {
 			// handle error
 		}
@@ -63,9 +67,9 @@ func main() {
 		json.Unmarshal(body, &result)
 		fmt.Println("body:", result)
 		//check if there is anything to keep
-		if len(c.TestSets[i].Keep) > 0 {
+		if len(c.TestSets[0].Tests[i].Keep) > 0 {
 
-			for k, v := range c.TestSets[i].Keep {
+			for k, v := range c.TestSets[0].Tests[i].Keep {
 				//extractValue return value we want to keep
 				//v is the path to this value
 				keeper[k] = reqs.ExtractValue(result, v)
@@ -73,8 +77,8 @@ func main() {
 			}
 
 		}
-		//assert happens here, currently only status
-		reqs.Assert(c.TestSets[i].Expect, resp, result)
+		//assert happens here
+		reqs.Assert(c.TestSets[0].Tests[i].Expect, resp, result)
 	}
 
 }

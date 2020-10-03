@@ -106,17 +106,15 @@ func main() {
 			//Unmarshal or Decode the JSON to the interface.
 			json.Unmarshal(body, &result)
 			fmt.Println("body:", result)
-			//check if there is anything to keep
-			if len(test.Keep) > 0 {
 
-				for k, v := range test.Keep {
-					//extractValue return value we want to keep
-					//v is the path to this value
-					keeper[k] = reqs.ExtractValue(result, v)
-					fmt.Println("we keep: ", keeper[k])
-				}
-
+			//check what to keep
+			for k, v := range test.Keep {
+				//extractValue return value we want to keep
+				//v is the path to this value
+				keeper[k] = reqs.ExtractValue(result, v)
+				fmt.Println("we keep: ", keeper[k])
 			}
+
 			//assert happens here
 			reqs.Assert(test.Expect, resp, result)
 

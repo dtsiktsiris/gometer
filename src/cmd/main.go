@@ -36,21 +36,12 @@ func main() {
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
-	//we iterate through test sets
-	for i := 0; i < len(c.TestSets[0].Tests); i++ {
-
-		// go func(){
-
-		// }
-
-		fmt.Println("-----Test Set Begin-----")
-
-		//check if there is dynamic variable which need to be setted
-		//we do it with regex re and search for this form ${mplampla}
-		setDynamicVariables(&c.TestSets[0].Tests[i].Request, keeper)
+	for _, test := range c.Before {
+		fmt.Println("-----Before-----")
+		setDynamicVariables(&test.Request, keeper)
 
 		//we do request
-		resp, err := c.TestSets[0].Tests[i].Request.Resolve()
+		resp, err := test.Request.Resolve()
 		if err != nil {
 			// handle error
 		}
@@ -67,9 +58,9 @@ func main() {
 		json.Unmarshal(body, &result)
 		fmt.Println("body:", result)
 		//check if there is anything to keep
-		if len(c.TestSets[0].Tests[i].Keep) > 0 {
+		if len(test.Keep) > 0 {
 
-			for k, v := range c.TestSets[0].Tests[i].Keep {
+			for k, v := range test.Keep {
 				//extractValue return value we want to keep
 				//v is the path to this value
 				keeper[k] = reqs.ExtractValue(result, v)
@@ -78,7 +69,58 @@ func main() {
 
 		}
 		//assert happens here
-		reqs.Assert(c.TestSets[0].Tests[i].Expect, resp, result)
+		reqs.Assert(test.Expect, resp, result)
+	}
+
+	//we iterate through test sets
+	for i := 0; i < len(c.TestSets); i++ {
+
+		fmt.Println("-----Test Set Begin-----")
+
+		for testIndex, test := range c.TestSets[i].Tests {
+
+			// go func(){
+
+			// }
+
+			fmt.Println("*** Test: ", testIndex)
+
+			//check if there is dynamic variable which need to be setted
+			//we do it with regex re and search for this form ${mplampla}
+			setDynamicVariables(&test.Request, keeper)
+
+			//we do request
+			resp, err := test.Request.Resolve()
+			if err != nil {
+				// handle error
+			}
+			body, readErr := ioutil.ReadAll(resp.Body)
+			if readErr != nil {
+				log.Fatal(readErr)
+			}
+			defer resp.Body.Close()
+
+			//Declared an empty interface
+			var result map[string]interface{}
+
+			//Unmarshal or Decode the JSON to the interface.
+			json.Unmarshal(body, &result)
+			fmt.Println("body:", result)
+			//check if there is anything to keep
+			if len(test.Keep) > 0 {
+
+				for k, v := range test.Keep {
+					//extractValue return value we want to keep
+					//v is the path to this value
+					keeper[k] = reqs.ExtractValue(result, v)
+					fmt.Println("we keep: ", keeper[k])
+				}
+
+			}
+			//assert happens here
+			reqs.Assert(test.Expect, resp, result)
+
+		}
 	}
 
 }

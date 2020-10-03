@@ -1,23 +1,24 @@
 variables:
   baseUrl: www.localhost.com
   port: 8080
-  
+
+before:
+  - request:
+      method: GET
+      url: http://localhost:8080/
+    expect:
+      statusCode: 200
+      assertions:
+        message field field2 field3: localhost
+    keep:
+      loc: message field field2 field3
+
 test_sets:
   - test_set:
     - request:
-        method: GET
-        url: http://localhost:8080/
-      expect:
-        statusCode: 200
-        assertions:
-          message field field2 field3: localhost
-      keep:
-        loc: message field field2 field3
-        myval2: message field field2
-    - request:
         method: PUT
         url: http://${loc}:8080/
-        body: '{"name": "dimitris"}'
+        body: '{"name": "dimitris","id": "1"}'
       expect:
         statusCode: 202
         assertions:

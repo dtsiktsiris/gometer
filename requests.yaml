@@ -15,6 +15,7 @@ before:
 
 test_sets:
   - test_set:
+    retries: 2
     tests:
       - request:
           method: PUT

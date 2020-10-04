@@ -6,16 +6,19 @@ import (
 )
 
 func Assert(e Expect, response *http.Response, body map[string]interface{}) {
-
+	fmt.Print("expect (", response.StatusCode, ") be equal to (", e.StatusCode, ") : ")
 	if e.StatusCode == response.StatusCode {
-		fmt.Println("status code: pass")
+		fmt.Println("PASS")
 	} else {
-		fmt.Println("assert fail")
+		fmt.Println("FAIL")
 	}
 	for k, v := range e.Assertions {
- 		if v == ExtractValue(body,k){
- 			fmt.Println("we match")
+		respValue := ExtractValue(body, k)
+		if v == respValue {
+			fmt.Println("expect (", respValue, ") be equal to (", v, ") : PASS")
+		} else {
+
+			fmt.Println("expect (", respValue, ") be equal to (", v, ") : FAIL")
 		}
-		//fmt.Println(k, v)
 	}
 }

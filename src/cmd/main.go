@@ -12,6 +12,10 @@ import (
 	"../reqs"
 )
 
+type TestResult struct {
+	Assertions []string
+}
+
 func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 
 	re := regexp.MustCompile("\\${\\w+}")
@@ -29,8 +33,8 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 
 func main() {
 
-	yamlPath := "../../simple.yaml"
-	// yamlPath := "../../requests.yaml"
+	// yamlPath := "../../simple.yaml"
+	yamlPath := "../../requests.yaml"
 
 	var c reqs.Conf
 	//load yaml file to Conf

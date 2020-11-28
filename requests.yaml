@@ -9,13 +9,13 @@ before:
     expect:
       statusCode: 200
       assertions:
-        message field field2 field3: localhost
+        person firstname: John
     keep:
-      loc: message field field2 field3
+      loc: host
 
 test_sets:
   - test_set:
-    retries: 2
+    retries: 1
     tests:
       - request:
           method: PUT

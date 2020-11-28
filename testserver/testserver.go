@@ -20,7 +20,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"message":{"field": {"field2": {"field3": "localhost"}}}}`))
+		w.Write([]byte(`{ "host" : "localhost" ,"person" : {"firstname": "John", "lastname" :"Doe"}}`))
 	case "POST":
 		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(`{"message": "post called"}`))

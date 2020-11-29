@@ -10,10 +10,22 @@ before:
       statusCode: 200
       assertions:
         person firstname: John
-    keep:
-      loc: host
-
 test_sets:
+  - test_set:
+    retries: 1
+    tests:
+      - request:
+          method: GET
+          url: http://localhost:8080/
+        expect:
+          statusCode: 202
+        keep:
+          loc: host
+      - request:
+          method: POST
+          url: http://localhost:8080/
+        expect:
+          statusCode: 201
   - test_set:
     retries: 1
     tests:
@@ -27,8 +39,3 @@ test_sets:
             name: dimitris
         keep:
           myval: name
-      - request:
-          method: POST
-          url: http://localhost:8080/
-        expect:
-          statusCode: 201

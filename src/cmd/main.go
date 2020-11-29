@@ -79,60 +79,60 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-
 	//we iterate through test sets
 	for i := 0; i < len(c.TestSets); i++ {
 
-		fmt.Println("-----Test Set Begin-----")
+		fmt.Println("-----Test Set", i+1, "Begin-----")
 
 		for retry := 0; retry < c.TestSets[i].Retries; retry++ {
 			wg.Add(1)
-			go func(tests []reqs.Test) {
-				defer wg.Done()
-				for testIndex, test := range tests {
-
-					fmt.Println("*** Test: ", testIndex+1)
-
-					//check if there is dynamic variable which need to be setted
-					//we do it with regex re and search for this form ${mplampla}
-					setDynamicVariables(&test.Request, keeper)
-
-					//we do request
-					resp, err := test.Request.Resolve()
-					if err != nil {
-						// handle error
-					}
-					body, readErr := ioutil.ReadAll(resp.Body)
-					if readErr != nil {
-						log.Fatal(readErr)
-					}
-					defer resp.Body.Close()
-
-					//Declared an empty interface
-					var result map[string]interface{}
-
-					//Unmarshal or Decode the JSON to the interface.
-					json.Unmarshal(body, &result)
-					fmt.Println("body:", result)
-
-					//check what to keep
-					for k, v := range test.Keep {
-						//extractValue return value we want to keep
-						//v is the path to this value
-						keeper[k] = reqs.ExtractValue(result, v)
-						fmt.Println("we keep: ", keeper[k])
-					}
-
-					//assert happens here
-					reqs.Assert(test.Expect, resp, result)
-
-				}
-
-			}(c.TestSets[i].Tests)
+			go handleTests(c.TestSets[i].Tests, keeper, &wg)
 
 		}
 
 		wg.Wait()
+	}
+
+}
+func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for testIndex, test := range tests {
+
+		fmt.Println("*** Test: ", testIndex+1)
+
+		//check if there is dynamic variable which need to be setted
+		//we do it with regex re and search for this form ${mplampla}
+		setDynamicVariables(&test.Request, keeper)
+
+		//we do request
+		resp, err := test.Request.Resolve()
+		if err != nil {
+			// handle error
+		}
+		body, readErr := ioutil.ReadAll(resp.Body)
+		if readErr != nil {
+			log.Fatal(readErr)
+		}
+		defer resp.Body.Close()
+
+		//Declared an empty interface
+		var result map[string]interface{}
+
+		//Unmarshal or Decode the JSON to the interface.
+		json.Unmarshal(body, &result)
+		fmt.Println("body:", result)
+
+		//check what to keep
+		for k, v := range test.Keep {
+			//extractValue return value we want to keep
+			//v is the path to this value
+			keeper[k] = reqs.ExtractValue(result, v)
+			fmt.Println("we keep: ", keeper[k])
+		}
+
+		//assert happens here
+		reqs.Assert(test.Expect, resp, result)
+
 	}
 
 }

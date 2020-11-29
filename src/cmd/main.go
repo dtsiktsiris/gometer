@@ -38,7 +38,6 @@ func main() {
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
-
 	fmt.Println("-----Before-----")
 
 	// execute "before" requests
@@ -75,6 +74,28 @@ func main() {
 		}
 
 		wg.Wait()
+	}
+
+	fmt.Println("-----After-----")
+	// execute "after" requests
+	for _, test := range c.After {
+		setDynamicVariables(&test.Request, keeper)
+
+		//we do request
+		result := test.Request.GetRequestResult()
+
+		if len(test.Keep) > 0 {
+
+			for k, v := range test.Keep {
+				//extractValue return value we want to keep
+				//v is the path to this value
+				keeper[k] = reqs.ExtractValue(result, v)
+				fmt.Println("we keep: ", keeper[k])
+			}
+
+		}
+		//assert happens here
+		reqs.Assert(test.Expect, result)
 	}
 
 }

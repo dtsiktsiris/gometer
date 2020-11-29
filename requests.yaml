@@ -39,3 +39,11 @@ test_sets:
             name: dimitris
         keep:
           myval: name
+after:
+  - request:
+      method: GET
+      url: http://localhost:8080/
+    expect:
+      statusCode: 200
+      assertions:
+        person firstname: John

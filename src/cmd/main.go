@@ -1,10 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"regexp"
 	"strings"
 	"sync"
@@ -41,29 +38,16 @@ func main() {
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
+
+	fmt.Println("-----Before-----")
+
 	// execute "before" requests
 	for _, test := range c.Before {
-		fmt.Println("-----Before-----")
 		setDynamicVariables(&test.Request, keeper)
 
 		//we do request
-		resp, err := test.Request.Resolve()
-		if err != nil {
-			// handle error
-		}
-		body, readErr := ioutil.ReadAll(resp.Body)
-		if readErr != nil {
-			log.Fatal(readErr)
-		}
-		defer resp.Body.Close()
+		result := test.Request.GetRequestResult()
 
-		//Declared an empty interface
-		var result map[string]interface{}
-
-		//Unmarshal or Decode the JSON to the interface.
-		json.Unmarshal(body, &result)
-		fmt.Println("body:", result)
-		//check if there is anything to keep
 		if len(test.Keep) > 0 {
 
 			for k, v := range test.Keep {
@@ -75,7 +59,7 @@ func main() {
 
 		}
 		//assert happens here
-		reqs.Assert(test.Expect, resp, result)
+		reqs.Assert(test.Expect, result)
 	}
 
 	var wg sync.WaitGroup
@@ -105,22 +89,7 @@ func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup
 		setDynamicVariables(&test.Request, keeper)
 
 		//we do request
-		resp, err := test.Request.Resolve()
-		if err != nil {
-			// handle error
-		}
-		body, readErr := ioutil.ReadAll(resp.Body)
-		if readErr != nil {
-			log.Fatal(readErr)
-		}
-		defer resp.Body.Close()
-
-		//Declared an empty interface
-		var result map[string]interface{}
-
-		//Unmarshal or Decode the JSON to the interface.
-		json.Unmarshal(body, &result)
-		fmt.Println("body:", result)
+		result := test.Request.GetRequestResult()
 
 		//check what to keep
 		for k, v := range test.Keep {
@@ -131,7 +100,7 @@ func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup
 		}
 
 		//assert happens here
-		reqs.Assert(test.Expect, resp, result)
+		reqs.Assert(test.Expect, result)
 
 	}
 

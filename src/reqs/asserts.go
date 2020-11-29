@@ -2,18 +2,17 @@ package reqs
 
 import (
 	"fmt"
-	"net/http"
 )
 
-func Assert(e Expect, response *http.Response, body map[string]interface{}) {
-	fmt.Print("expect (", response.StatusCode, ") be equal to (", e.StatusCode, ") : ")
-	if e.StatusCode == response.StatusCode {
+func Assert(e Expect, result map[string]interface{}) {
+	fmt.Print("expect (", result["statusCode"], ") be equal to (", e.StatusCode, ") : ")
+	if e.StatusCode == result["statusCode"] {
 		fmt.Println("PASS")
 	} else {
 		fmt.Println("FAIL")
 	}
 	for k, v := range e.Assertions {
-		respValue := ExtractValue(body, k)
+		respValue := ExtractValue(result, k)
 		if v == respValue {
 			fmt.Println("expect (", respValue, ") be equal to (", v, ") : PASS")
 		} else {

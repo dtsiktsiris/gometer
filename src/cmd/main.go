@@ -38,30 +38,15 @@ func main() {
 	c.GetConf(yamlPath)
 	keeper := make(map[string]string)
 
+	var wg sync.WaitGroup
+
 	fmt.Println("-----Before-----")
 
 	// execute "before" requests
-	for _, test := range c.Before {
-		setDynamicVariables(&test.Request, keeper)
+	wg.Add(1)
+	handleTests(c.Before, keeper, &wg)
+	wg.Wait()
 
-		//we do request
-		result := test.Request.GetRequestResult()
-
-		if len(test.Keep) > 0 {
-
-			for k, v := range test.Keep {
-				//extractValue return value we want to keep
-				//v is the path to this value
-				keeper[k] = reqs.ExtractValue(result, v)
-				fmt.Println("we keep: ", keeper[k])
-			}
-
-		}
-		//assert happens here
-		reqs.Assert(test.Expect, result)
-	}
-
-	var wg sync.WaitGroup
 	//we iterate through test sets
 	for i := 0; i < len(c.TestSets); i++ {
 
@@ -78,25 +63,9 @@ func main() {
 
 	fmt.Println("-----After-----")
 	// execute "after" requests
-	for _, test := range c.After {
-		setDynamicVariables(&test.Request, keeper)
-
-		//we do request
-		result := test.Request.GetRequestResult()
-
-		if len(test.Keep) > 0 {
-
-			for k, v := range test.Keep {
-				//extractValue return value we want to keep
-				//v is the path to this value
-				keeper[k] = reqs.ExtractValue(result, v)
-				fmt.Println("we keep: ", keeper[k])
-			}
-
-		}
-		//assert happens here
-		reqs.Assert(test.Expect, result)
-	}
+	wg.Add(1)
+	handleTests(c.After, keeper, &wg)
+	wg.Wait()
 
 }
 func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup) {

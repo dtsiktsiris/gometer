@@ -44,6 +44,6 @@ after:
       method: GET
       url: http://localhost:8080/
     expect:
-      statusCode: 200
+      statusCode: 201
       assertions:
         person firstname: John

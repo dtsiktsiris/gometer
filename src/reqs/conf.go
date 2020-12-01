@@ -26,9 +26,10 @@ type Test struct {
 }
 
 type Request struct {
-	Method string `yaml:"method"`
-	Url    string `yaml:"url"`
-	Body   string `yaml:"body"`
+	Method string            `yaml:"method"`
+	Url    string            `yaml:"url"`
+	Body   string            `yaml:"body"`
+	Header map[string]string `yaml:"header"`
 }
 
 type Expect struct {

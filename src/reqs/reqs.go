@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (request *Request) GetRequestResult() map[string]interface{}{
+func (request *Request) GetRequestResult() map[string]interface{} {
 	resp, err := request.Resolve()
 	if err != nil {
 		log.Fatal(err)
@@ -35,14 +35,16 @@ func (request *Request) GetRequestResult() map[string]interface{}{
 func (request *Request) Resolve() (*http.Response, error) {
 
 	switch request.Method {
-	case "GET" :
+	case "GET":
 		resp, err := http.Get(request.Url)
 		return resp, err
-	case "POST" :
-		resp, err := http.Post(request.Url,"application/json",bytes.NewBufferString(request.Body))
+	case "POST":
+		req, err := http.NewRequest(http.MethodPost, request.Url, bytes.NewBufferString(request.Body))
+		req.Header.Add("Content-Type", "application/json")
+		resp, err := http.DefaultClient.Do(req)
 		return resp, err
-	case "PUT" :
-		req, err := http.NewRequest(http.MethodPut, request.Url,bytes.NewBufferString(request.Body))
+	case "PUT":
+		req, err := http.NewRequest(http.MethodPut, request.Url, bytes.NewBufferString(request.Body))
 		resp, err := http.DefaultClient.Do(req)
 		return resp, err
 	default:

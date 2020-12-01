@@ -33,6 +33,8 @@ test_sets:
           method: PUT
           url: http://${loc}:8080/
           body: '{"name": "dimitris","id": "1"}'
+          header:
+            Content-Type: application/json
         expect:
           statusCode: 202
           assertions:

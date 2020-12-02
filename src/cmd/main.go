@@ -25,6 +25,17 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 			req.Url = strings.Replace(req.Url, s, keeper[s[2:len(s)-1]], -1)
 		}
 	}
+
+	if len(req.Body)>0 && len(re.FindString(req.Body)) > 0 {
+		fmt.Println(req.Body)
+		splt := re.FindAllString(req.Body, -1)
+
+		for _, s := range splt {
+			//we replase ${mplampla} with keeper['mplampla']
+			req.Body = strings.Replace(req.Body, s, keeper[s[2:len(s)-1]], -1)
+		}
+		fmt.Println(req.Body)
+	}
 	//TODO we also need to check/replace for body and header
 }
 

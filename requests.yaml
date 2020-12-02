@@ -10,6 +10,8 @@ before:
       statusCode: 200
       assertions:
         person firstname: John
+    keep:
+      name: person lastname
 test_sets:
   - test_set:
     retries: 1
@@ -32,7 +34,7 @@ test_sets:
       - request:
           method: PUT
           url: http://${loc}:8080/
-          body: '{"name": "dimitris","id": "1"}'
+          body: '{"name": "${name}","id": "1"}'
           header:
             Content-Type: application/json
         expect:

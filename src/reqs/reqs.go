@@ -45,6 +45,7 @@ func (request *Request) Resolve() (*http.Response, error) {
 		return resp, err
 	case "PUT":
 		req, err := http.NewRequest(http.MethodPut, request.Url, bytes.NewBufferString(request.Body))
+		req.Header.Add("Content-Type", "application/json")
 		resp, err := http.DefaultClient.Do(req)
 		return resp, err
 	default:

@@ -9,6 +9,9 @@ import (
 
 func home(w http.ResponseWriter, r *http.Request) {
 	body, readErr := ioutil.ReadAll( r.Body)
+	for _, hed := range r.Header{
+		fmt.Println(hed)
+	}
 
 	str := string(body)
 	if readErr != nil {

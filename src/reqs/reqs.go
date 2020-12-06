@@ -9,8 +9,8 @@ import (
 	"net/http"
 )
 
-func (request *Request) GetRequestResult() map[string]interface{} {
-	resp, err := request.Resolve()
+func (r *Request) GetRequestResult() map[string]interface{} {
+	resp, err := r.Resolve()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,29 +32,21 @@ func (request *Request) GetRequestResult() map[string]interface{} {
 	return result
 }
 
-func (request *Request) Resolve() (*http.Response, error) {
+func (r *Request) Resolve() (*http.Response, error) {
 
-	switch request.Method {
-	case "GET":
-		resp, err := http.Get(request.Url)
-		return resp, err
-	case "POST":
-		req, err := http.NewRequest(http.MethodPost, request.Url, bytes.NewBufferString(request.Body))
-		req.Header.Add("Content-Type", "application/json")
-		resp, err := http.DefaultClient.Do(req)
-		return resp, err
-	case "PUT":
-		req, err := http.NewRequest(http.MethodPut, request.Url, bytes.NewBufferString(request.Body))
-		req.Header.Add("Content-Type", "application/json")
-		resp, err := http.DefaultClient.Do(req)
-		return resp, err
-	default:
-		return nil, nil
+	req, err := http.NewRequest(r.Method, r.Url, bytes.NewBufferString(r.Body))
 
+	if err != nil {
+		fmt.Println("Error in request resolve preparing request", err)
 	}
 
-	//if err != nil {
-	//	// handle error
-	//}
+	req.Header.Add("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		fmt.Println("Error in request resolve getting resp", err)
+	}
+
+	return resp, err
 
 }

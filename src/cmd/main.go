@@ -26,7 +26,7 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 		}
 	}
 
-	if len(req.Body)>0 && len(re.FindString(req.Body)) > 0 {
+	if len(req.Body) > 0 && len(re.FindString(req.Body)) > 0 {
 		fmt.Println(req.Body)
 		splt := re.FindAllString(req.Body, -1)
 
@@ -34,9 +34,17 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 			//we replase ${mplampla} with keeper['mplampla']
 			req.Body = strings.Replace(req.Body, s, keeper[s[2:len(s)-1]], -1)
 		}
-		fmt.Println(req.Body)
 	}
-	//TODO we also need to check/replace for body and header
+
+	for k, v := range req.Header {
+		if len(re.FindString(v)) > 0 {
+			splt := re.FindAllString(v, -1)
+
+			for _, s := range splt {
+				req.Header[k] = strings.Replace(v, s, keeper[s[2:len(s)-1]], -1)
+			}
+		}
+	}
 }
 
 func main() {

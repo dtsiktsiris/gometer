@@ -37,7 +37,7 @@ test_sets:
           body: '{"name": "${name}","id": "1"}'
           header:
             customHeader: customValue
-            customHeaderb: customValueb
+            customHeaderb: dfd${loc}fdfd
         expect:
           statusCode: 202
           assertions:

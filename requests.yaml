@@ -36,7 +36,8 @@ test_sets:
           url: http://${loc}:8080/
           body: '{"name": "${name}","id": "1"}'
           header:
-            Content-Type: application/json
+            customHeader: customValue
+            customHeaderb: customValueb
         expect:
           statusCode: 202
           assertions:

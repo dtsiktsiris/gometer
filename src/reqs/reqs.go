@@ -36,6 +36,11 @@ func (r *Request) Resolve() (*http.Response, error) {
 
 	req, err := http.NewRequest(r.Method, r.Url, bytes.NewBufferString(r.Body))
 
+	for k, v := range r.Header {
+		//TODO check differences for .Add .Set and concatenacion
+		req.Header.Add(k, v)
+	}
+
 	if err != nil {
 		fmt.Println("Error in request resolve preparing request", err)
 	}

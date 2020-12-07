@@ -8,16 +8,16 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	body, readErr := ioutil.ReadAll( r.Body)
-	for _, hed := range r.Header{
-		fmt.Println(hed)
+	body, readErr := ioutil.ReadAll(r.Body)
+	for k, v := range r.Header {
+		fmt.Println(k, v)
 	}
 
 	str := string(body)
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
-//js,_ := json.Marshal(str)
+	//js,_ := json.Marshal(str)
 	fmt.Printf(str)
 	w.Header().Set("Content-Type", "application/json")
 	switch r.Method {

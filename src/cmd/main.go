@@ -27,7 +27,7 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 	}
 
 	if len(req.Body) > 0 && len(re.FindString(req.Body)) > 0 {
-		fmt.Println(req.Body)
+
 		splt := re.FindAllString(req.Body, -1)
 
 		for _, s := range splt {
@@ -91,7 +91,8 @@ func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup
 	defer wg.Done()
 	for testIndex, test := range tests {
 
-		fmt.Println("*** Test: ", testIndex+1)
+		var assRes []string
+		assRes = append(assRes, fmt.Sprintf("*** Test: %v", testIndex+1))
 
 		//check if there is dynamic variable which need to be setted
 		//we do it with regex re and search for this form ${mplampla}
@@ -105,11 +106,14 @@ func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup
 			//extractValue return value we want to keep
 			//v is the path to this value
 			keeper[k] = reqs.ExtractValue(result, v)
-			fmt.Println("we keep: ", keeper[k])
+			// fmt.Println("we keep: ", keeper[k])
 		}
-
 		//assert happens here
-		reqs.Assert(test.Expect, result)
+		assRes = reqs.Assert(test.Expect, result, assRes)
+
+		for _, s := range assRes {
+			fmt.Println(s)
+		}
 
 	}
 

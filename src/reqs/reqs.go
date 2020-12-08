@@ -25,7 +25,7 @@ func (r *Request) GetRequestResult() map[string]interface{} {
 
 	//Unmarshal or Decode the JSON to the interface.
 	json.Unmarshal(body, &result)
-	fmt.Println("body:", result)
+	// fmt.Println("body:", result)
 
 	result["statusCode"] = resp.StatusCode
 

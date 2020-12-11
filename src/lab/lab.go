@@ -1,18 +1,22 @@
 package main
+
 import (
-	"../reqs"
+	"encoding/json"
 	"fmt"
 )
 func main() {
-	//keeped := map[string]string{"url":"localhost", "port":"8080"}
-	//str := "http://${url}:${port}/"
-	//
-	//re := regexp.MustCompile("\\${\\w+}")
-	//sp := re.FindString(str)
-	//fmt.Println(sp[2 : len(sp)-1])
+	respBody := []byte(`{ "host" : "localhost" ,"person" : [{"firstname": "Jack", "lastname" :"Doe"},{"firstname": "John", "lastname" :"Snow"}]}`)
 
-	var c reqs.Conf
-	//load yaml file to Conf
-	c.GetConf()
-	fmt.Println(c.TestSets[0].Request.Body)
+	var result map[string]interface{}
+
+	//Unmarshal or Decode the JSON to the interface.
+	json.Unmarshal(respBody, &result)
+
+	persons := result["person"].([]interface{})
+
+	firs:= persons[1].(map[string]interface{})
+		fmt.Println(firs["firstname"])
+
+
+
 }

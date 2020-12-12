@@ -1,40 +1,39 @@
 package reqs
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
-
-	"gopkg.in/yaml.v3"
 )
 
 type Conf struct {
-	Variables map[string]interface{} `yaml:"variables"`
-	Before    []Test                 `yaml:"before"`
-	TestSets  []TestSet              `yaml:"test_sets"`
-	After     []Test                 `yaml:"after"`
+	Variables map[string]interface{} `json:"variables"`
+	Before    []Test                 `json:"before"`
+	TestSets  []TestSet              `json:"test_sets"`
+	After     []Test                 `json:"after"`
 }
 
 type TestSet struct {
-	Retries int    `yaml:"retries"`
-	Tests   []Test `yaml:"tests"`
+	Retries int    `json:"retries"`
+	Tests   []Test `json:"tests"`
 }
 
 type Test struct {
-	Request Request           `yaml:"request"`
-	Expect  Expect            `yaml:"expect"`
-	Keep    map[string]string `yaml:"keep"`
+	Request Request           `json:"request"`
+	Expect  Expect            `json:"expect"`
+	Keep    map[string]string `json:"keep"`
 }
 
 type Request struct {
-	Method string            `yaml:"method"`
-	Url    string            `yaml:"url"`
-	Body   string            `yaml:"body"`
-	Header map[string]string `yaml:"header"`
+	Method string            `json:"method"`
+	Url    string            `json:"url"`
+	Body   string            `json:"body"`
+	Header map[string]string `json:"header"`
 }
 
 type Expect struct {
-	StatusCode int               `yaml:"statusCode"`
-	Assertions map[string]string `yaml:"assertions"`
+	StatusCode int               `json:"statusCode"`
+	Assertions map[string]string `json:"assertions"`
 }
 
 func (c *Conf) GetConf(yamlPath string) *Conf {
@@ -43,10 +42,10 @@ func (c *Conf) GetConf(yamlPath string) *Conf {
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 	}
-	err = yaml.Unmarshal(yamlFile, c)
+	err = json.Unmarshal(yamlFile, c)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}
-
+	//fmt.Printf("%+v",c)
 	return c
 }

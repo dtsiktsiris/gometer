@@ -49,12 +49,12 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 
 func main() {
 
-	//yamlPath := "../../simple.yaml"
-	yamlPath := "../../requests.yaml"
+	//jsonPath := "../../simple.json"
+	jsonPath := "../../requests.json"
 
 	var c reqs.Conf
 	//load yaml file to Conf
-	c.GetConf(yamlPath)
+	c.GetConf(jsonPath)
 	keeper := make(map[string]string)
 
 	var wg sync.WaitGroup

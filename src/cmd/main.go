@@ -49,7 +49,7 @@ func setDynamicVariables(req *reqs.Request, keeper map[string]string) {
 
 func main() {
 
-	// yamlPath := "../../simple.yaml"
+	//yamlPath := "../../simple.yaml"
 	yamlPath := "../../requests.yaml"
 
 	var c reqs.Conf

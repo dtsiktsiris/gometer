@@ -9,9 +9,10 @@ before:
     expect:
       statusCode: 200
       assertions:
-        person firstname: John
+        persons[0] firstname: John
     keep:
-      name: person lastname
+      loch: host
+      name: persons[0] lastname
 test_sets:
   - test_set:
     retries: 1
@@ -50,5 +51,3 @@ after:
       url: http://localhost:8080/
     expect:
       statusCode: 201
-      assertions:
-        person firstname: John

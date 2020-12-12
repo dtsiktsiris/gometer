@@ -2,16 +2,14 @@ variables:
   baseUrl: www.localhost.com
   port: 8080
   
-test_sets:
-  - test_set:
-    retries: 4
-    tests:
-      - request:
-          method: GET
-          url: http://localhost:8080/
-        expect:
-          statusCode: 200
-          assertions:
-            message field field2 field3: localhost
-        keep:
-          loc: message field field2 field3
+before:
+  - request:
+      method: GET
+      url: http://localhost:8080/
+    expect:
+      statusCode: 200
+      assertions:
+        persons[0] firstname: John
+    keep:
+      loch: host
+      name: persons[0] lastname

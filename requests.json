@@ -5,6 +5,7 @@
   },
   "before": [
     {
+      "name": "test 1",
       "request": {
         "method": "GET",
         "url": "http://localhost:8080/"
@@ -22,9 +23,11 @@
   ],
   "test_sets": [
     {
+      "name": "test set 1",
       "retries": 1,
       "tests": [
         {
+          "name": "test 1",
           "request": {
             "method": "GET",
             "url": "http://localhost:8080/"
@@ -37,6 +40,7 @@
           }
         },
         {
+          "name": "test 2",
           "request": {
             "method": "POST",
             "url": "http://localhost:8080/"
@@ -48,9 +52,11 @@
       ]
     },
     {
+      "name": "test set 2",
       "retries": 1,
       "tests": [
         {
+          "name": "test 1",
           "request": {
             "method": "PUT",
             "url": "http://${loc}:8080/",
@@ -75,6 +81,7 @@
   ],
   "after": [
     {
+      "name": "test 1",
       "request": {
         "method": "GET",
         "url": "http://localhost:8080/"

@@ -14,11 +14,13 @@ type Conf struct {
 }
 
 type TestSet struct {
+	Name    string `json:"name"`
 	Retries int    `json:"retries"`
 	Tests   []Test `json:"tests"`
 }
 
 type Test struct {
+	Name    string            `json:"name"`
 	Request Request           `json:"request"`
 	Expect  Expect            `json:"expect"`
 	Keep    map[string]string `json:"keep"`

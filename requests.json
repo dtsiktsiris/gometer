@@ -16,9 +16,12 @@
           "persons[0] firstname": "John"
         }
       },
-      "keep": {
-        "name": "persons[0] lastname"
-      }
+      "keep": [
+        {
+          "variable_name": "name",
+          "path": "persons[0] lastname"
+        }
+      ]
     }
   ],
   "test_sets": [
@@ -35,9 +38,12 @@
           "expect": {
             "statusCode": 202
           },
-          "keep": {
-            "loc": "host"
-          }
+          "keep": [
+            {
+              "variable_name": "loc",
+              "path": "host"
+            }
+          ]
         },
         {
           "name": "test 2",
@@ -72,9 +78,12 @@
               "name": "dimitris"
             }
           },
-          "keep": {
-            "myval": "name"
-          }
+          "keep": [
+            {
+              "variable_name": "myval",
+              "path": "name"
+            }
+          ]
         }
       ]
     }

@@ -20,10 +20,10 @@ type TestSet struct {
 }
 
 type Test struct {
-	Name    string            `json:"name"`
-	Request Request           `json:"request"`
-	Expect  Expect            `json:"expect"`
-	Keep    map[string]string `json:"keep"`
+	Name    string  `json:"name"`
+	Request Request `json:"request"`
+	Expect  Expect  `json:"expect"`
+	Keep    []Keep  `json:"keep"`
 }
 
 type Request struct {
@@ -38,13 +38,18 @@ type Expect struct {
 	Assertions map[string]string `json:"assertions"`
 }
 
-func (c *Conf) GetConf(yamlPath string) *Conf {
+type Keep struct {
+	VariableName string `json:"variable_name"`
+	Path         string `json:"path"`
+}
 
-	yamlFile, err := ioutil.ReadFile(yamlPath)
+func (c *Conf) GetConf(jsonPath string) *Conf {
+
+	jsonFile, err := ioutil.ReadFile(jsonPath)
 	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
+		log.Printf("jsonFile.Get err   #%v ", err)
 	}
-	err = json.Unmarshal(yamlFile, c)
+	err = json.Unmarshal(jsonFile, c)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}

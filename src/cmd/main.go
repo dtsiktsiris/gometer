@@ -102,11 +102,12 @@ func handleTests(tests []reqs.Test, keeper map[string]string, wg *sync.WaitGroup
 		result := test.Request.GetRequestResult()
 
 		//check what to keep
-		for k, v := range test.Keep {
+		for _, k := range test.Keep {
+			// fmt.Println(k.Path)
 			//extractValue return value we want to keep
 			//v is the path to this value
-			keeper[k] = reqs.ExtractValue(result, v)
-			// fmt.Println("we keep: ", keeper[k])
+			keeper[k.VariableName] = reqs.ExtractValue(result, k.Path)
+			// fmt.Println("we keep: ", keeper[k.VariableName])
 		}
 		//assert happens here
 		assRes = reqs.Assert(test.Expect, result, assRes)

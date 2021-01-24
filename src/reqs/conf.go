@@ -43,16 +43,19 @@ type Keep struct {
 	Path         string `json:"path"`
 }
 
-func (c *Conf) GetConf(jsonPath string) *Conf {
+func GetConf(jsonPath string) {
+
+	var c Conf
 
 	jsonFile, err := ioutil.ReadFile(jsonPath)
 	if err != nil {
 		log.Printf("jsonFile.Get err   #%v ", err)
 	}
-	err = json.Unmarshal(jsonFile, c)
+	err = json.Unmarshal(jsonFile, &c)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}
+
 	//fmt.Printf("%+v",c)
-	return c
+	Handle(&c)
 }

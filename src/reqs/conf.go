@@ -23,7 +23,7 @@ type Test struct {
 	Name    string  `json:"name"`
 	Request Request `json:"request"`
 	Expect  Expect  `json:"expect"`
-	Keep    []Keep  `json:"keep"`
+	Keep    map[string]string `json:"keep"`
 }
 
 type Request struct {
@@ -36,11 +36,6 @@ type Request struct {
 type Expect struct {
 	StatusCode int               `json:"statusCode"`
 	Assertions map[string]string `json:"assertions"`
-}
-
-type Keep struct {
-	VariableName string `json:"variable_name"`
-	Path         string `json:"path"`
 }
 
 func GetConf(jsonPath string) {

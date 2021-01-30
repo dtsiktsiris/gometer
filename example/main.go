@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	jsonPath := "./requests.json"
+	jsonPath := "./testserver_example_test.json"
 	//load yaml file to Conf
 	gometer.GetConf(jsonPath)
 }

@@ -1,4 +1,4 @@
-package reqs
+package gometer
 
 import (
 	"fmt"

@@ -19,7 +19,7 @@ func setDynamicVariables(req *Request, keeper map[string]string) {
 		splt := re.FindAllString(req.Url, -1)
 
 		for _, s := range splt {
-			//we replase ${mplampla} with keeper['mplampla']
+			//we replase ${blabla} with keeper['blabla']
 			req.Url = strings.Replace(req.Url, s, keeper[s[2:len(s)-1]], -1)
 		}
 	}
@@ -95,7 +95,6 @@ func handleTests(tests []Test, keeper map[string]string, wg *sync.WaitGroup) {
 
 		//check what to keep
 		for k, v := range test.Keep {
-			// fmt.Println(k.Path)
 			//extractValue return value we want to keep
 			//v is the path to this value
 			keeper[k] = ExtractValue(result, v)

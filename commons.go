@@ -43,7 +43,7 @@ func setDynamicVariables(req *Request, keeper map[string]string) {
 }
 
 
-func ExtractValue(respBody map[string]interface{}, path string) string {
+func extractValue(respBody map[string]interface{}, path string) string {
 	var keep string
 	pathKeys := strings.Split(path, " ")
 	temp := respBody

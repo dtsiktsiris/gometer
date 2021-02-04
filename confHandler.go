@@ -5,8 +5,7 @@ import (
 	"sync"
 )
 
-
-func Handle(c *Conf) {
+func handle(c *Conf) {
 	keeper := make(map[string]string)
 
 	var wg sync.WaitGroup

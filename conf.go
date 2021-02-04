@@ -20,9 +20,9 @@ type TestSet struct {
 }
 
 type Test struct {
-	Name    string  `json:"name"`
-	Request Request `json:"request"`
-	Expect  Expect  `json:"expect"`
+	Name    string            `json:"name"`
+	Request Request           `json:"request"`
+	Expect  Expect            `json:"expect"`
 	Keep    map[string]string `json:"keep"`
 }
 
@@ -52,5 +52,5 @@ func GetConf(jsonPath string) {
 	}
 
 	//fmt.Printf("%+v",c)
-	Handle(&c)
+	handle(&c)
 }

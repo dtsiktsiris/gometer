@@ -17,17 +17,17 @@ func handleTests(tests []Test, keeper map[string]string, wg *sync.WaitGroup) {
 		setDynamicVariables(&test.Request, keeper)
 
 		//we do request
-		result := test.Request.GetRequestResult()
+		result := test.Request.getRequestResult()
 
 		//check what to keep
 		for k, v := range test.Keep {
 			//extractValue return value we want to keep
 			//v is the path to this value
-			keeper[k] = ExtractValue(result, v)
+			keeper[k] = extractValue(result, v)
 			// fmt.Println("we keep: ", keeper[k.VariableName])
 		}
 		//assert happens here
-		assRes = Assert(test.Expect, result, assRes)
+		assRes = assert(test.Expect, result, assRes)
 
 		for _, s := range assRes {
 			fmt.Println(s)

@@ -9,8 +9,8 @@ import (
 	"net/http"
 )
 
-func (r *Request) GetRequestResult() map[string]interface{} {
-	resp, err := r.Resolve()
+func (r *Request) getRequestResult() map[string]interface{} {
+	resp, err := r.resolve()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func (r *Request) GetRequestResult() map[string]interface{} {
 	return result
 }
 
-func (r *Request) Resolve() (*http.Response, error) {
+func (r *Request) resolve() (*http.Response, error) {
 
 	req, err := http.NewRequest(r.Method, r.Url, bytes.NewBufferString(r.Body))
 

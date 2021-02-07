@@ -2,7 +2,6 @@ package gometer
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 )
 
@@ -38,15 +37,11 @@ type Expect struct {
 	Assertions map[string]string `json:"assertions"`
 }
 
-func GetConf(jsonPath string) {
+func LoadConf(jsonContent []byte) {
 
 	var c Conf
 
-	jsonFile, err := ioutil.ReadFile(jsonPath)
-	if err != nil {
-		log.Printf("jsonFile.Get err   #%v ", err)
-	}
-	err = json.Unmarshal(jsonFile, &c)
+	err := json.Unmarshal(jsonContent, &c)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
 	}

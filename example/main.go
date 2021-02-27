@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../../gometer"
+	"github.com/ditsikts/gometer"
 )
 
 func main() {

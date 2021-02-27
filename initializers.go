@@ -1,13 +1,13 @@
 package gometer
 
 import (
-	"io/ioutil"
+	"os"
 	"log"
 )
 
 func InitWithFile(jsonPath string) {
 
-	jsonContent, err := ioutil.ReadFile(jsonPath)
+	jsonContent, err := os.ReadFile(jsonPath)
 	if err != nil {
 		log.Printf("Read file err   #%v ", err)
 	}

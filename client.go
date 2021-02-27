@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func (r *Request) getRequestResult() map[string]interface{} {
 	if err != nil {
 		log.Fatal(err)
 	}
-	body, readErr := ioutil.ReadAll(resp.Body)
+	body, readErr := io.ReadAll(resp.Body)
 	if readErr != nil {
 		log.Fatal(readErr)
 	}

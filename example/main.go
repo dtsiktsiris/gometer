@@ -1,12 +1,64 @@
 package main
 
 import (
+	"os"
+
 	"github.com/ditsikts/gometer"
 )
 
 func main() {
 
-	jsonPath := "./testserver_example_test.json"
+	jsonFilePath := os.Args[1]
+	gometer.InitWithFile(jsonFilePath)
 
-	gometer.InitWithFile(jsonPath)
+	// gometer.InitWithJSONString(getJSONString())
+}
+
+func getJSONString() string {
+	json := `{
+		"variables": {
+		  "baseUrl": "www.localhost.com",
+		  "port": "8080"
+		},
+		"before": [
+		  {
+			"name": "test 1",
+			"request": {
+			  "method": "GET",
+			  "url": "http://localhost:8080/"
+			},
+			"expect": {
+			  "statusCode": 200,
+			  "assertions": {
+				"persons[0] firstname": "John"
+			  }
+			},
+			"keep": {
+			  "name": "persons[0] lastname"
+			}
+		  }
+		],
+		"test_sets": [
+		  {
+			"name": "test set 1",
+			"retries": 1,
+			"tests": [
+			  {
+				"name": "test 1",
+				"request": {
+				  "method": "GET",
+				  "url": "http://localhost:8080/"
+				},
+				"expect": {
+				  "statusCode": 202
+				},
+				"keep": {
+				  "loc": "host"
+				}
+			  }
+			]
+		  }
+		]
+	  }`
+	return json
 }

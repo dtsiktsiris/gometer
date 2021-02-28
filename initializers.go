@@ -1,13 +1,13 @@
 package gometer
 
 import (
-	"os"
 	"log"
+	"os"
 )
 
-func InitWithFile(jsonPath string) {
+func InitWithFile(jsonFilePath string) {
 
-	jsonContent, err := os.ReadFile(jsonPath)
+	jsonContent, err := os.ReadFile(jsonFilePath)
 	if err != nil {
 		log.Printf("Read file err   #%v ", err)
 	}
@@ -15,7 +15,7 @@ func InitWithFile(jsonPath string) {
 	LoadConf(jsonContent)
 }
 
-func InitWithJSON(jsonString string) {
+func InitWithJSONString(jsonString string) {
 
 	if jsonString == "" {
 		log.Printf("JSON is empty. Func: InitWithJSON.")

@@ -7,3 +7,5 @@ A prototype inspired by JMeter written in go :)
 - then change folder to /example and execute main.go
   - make changes at testserver_example_test.json
   - rerun main.go
+
+*GO Version: 1.16+*

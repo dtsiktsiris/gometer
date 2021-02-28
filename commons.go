@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-
 func setDynamicVariables(req *Request, keeper map[string]string) {
 
 	re := regexp.MustCompile("\\${\\w+}")
@@ -42,7 +41,6 @@ func setDynamicVariables(req *Request, keeper map[string]string) {
 	}
 }
 
-
 func extractValue(respBody map[string]interface{}, path string) string {
 	var keep string
 	pathKeys := strings.Split(path, " ")
@@ -60,8 +58,11 @@ func extractValue(respBody map[string]interface{}, path string) string {
 				fmt.Println("Error converting string to int", err)
 			}
 			tempArray := temp[splitKey[0]].([]interface{})
-
-			temp = tempArray[index].(map[string]interface{})
+			if z == len(pathKeys)-1 {
+				keep = fmt.Sprintf("%v", tempArray[index])
+			} else {
+				temp = tempArray[index].(map[string]interface{})
+			}
 		} else if z == len(pathKeys)-1 {
 			keep = fmt.Sprintf("%v", temp[pathKeys[z]])
 		} else {

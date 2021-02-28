@@ -1,17 +1,15 @@
 package main
 
 import (
-	"os"
-
 	"github.com/ditsikts/gometer"
 )
 
 func main() {
 
-	jsonFilePath := os.Args[1]
-	gometer.InitWithFile(jsonFilePath)
+	// jsonFilePath := os.Args[1]
+	// gometer.InitWithFile(jsonFilePath)
 
-	// gometer.InitWithJSONString(getJSONString())
+	gometer.InitWithJSONString(getJSONString())
 }
 
 func getJSONString() string {
@@ -30,7 +28,8 @@ func getJSONString() string {
 			"expect": {
 			  "statusCode": 200,
 			  "assertions": {
-				"persons[0] firstname": "John"
+				"persons[0] firstname": "John",
+				"enviroments[0]": "develop"
 			  }
 			},
 			"keep": {

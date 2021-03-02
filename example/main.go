@@ -33,7 +33,8 @@ func getJSONString() string {
 			  }
 			},
 			"keep": {
-			  "name": "persons[0] lastname"
+			  "name": "persons[0] lastname",
+			  "local": "host"
 			}
 		  }
 		],
@@ -46,7 +47,7 @@ func getJSONString() string {
 				"name": "test 1",
 				"request": {
 				  "method": "GET",
-				  "url": "http://localhost:8080/"
+				  "url": "http://${local}:8080/"
 				},
 				"expect": {
 				  "statusCode": 202

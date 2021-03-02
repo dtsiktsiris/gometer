@@ -63,10 +63,12 @@ func extractValue(respBody map[string]interface{}, path string) string {
 			} else {
 				temp = tempArray[index].(map[string]interface{})
 			}
-		} else if z == len(pathKeys)-1 {
-			keep = fmt.Sprintf("%v", temp[pathKeys[z]])
 		} else {
-			temp = temp[pathKeys[z]].(map[string]interface{})
+			if z == len(pathKeys)-1 {
+				keep = fmt.Sprintf("%v", temp[pathKeys[z]])
+			} else {
+				temp = temp[pathKeys[z]].(map[string]interface{})
+			}
 		}
 	}
 

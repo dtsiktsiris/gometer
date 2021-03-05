@@ -1,4 +1,4 @@
-package gometer
+package lib
 
 import (
 	"log"

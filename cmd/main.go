@@ -1,7 +1,7 @@
 package main
 
 // import (
-// 	"github.com/dtsiktsiris/gometer/lib"
+// 	"github.com/dtsiktsiris/gometer"
 // )
 
 func main() {
